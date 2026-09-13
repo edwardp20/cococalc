@@ -17,7 +17,9 @@ package com.edwardp20.cococalc;
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+import java.math.BigDecimal;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Coco {
     public static void main(String[] args) {
@@ -38,10 +40,18 @@ public class Coco {
 
     private static String processor(String command) {
         //如果匹配到--exit，就直接退出
+        //定义返回值
+        String result = "= ";
         if(command.equals("--exit")) {
             System.exit(0);
         }
-        //否则就暂时返回，测试文本
-        return "test";
+        //分词
+        ArrayList<String> exprArr = Tokenizer.divideExpression(command);
+        //存入操作数一二
+        BigDecimal num1 = new BigDecimal(exprArr.get(0));
+        BigDecimal num2 = new BigDecimal(exprArr.get(2));
+        //加
+        result = num1.add(num2).toPlainString();
+        return result;
     }
 }
