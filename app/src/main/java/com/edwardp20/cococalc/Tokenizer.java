@@ -23,16 +23,38 @@ public class Tokenizer {
     public static ArrayList<String> divideExpression(String expr) {
         //定义ArrayList
         ArrayList<String> result = new ArrayList<String>();
-        //找出加号的位置
-        int indexOfPlus = expr.indexOf('+');
-        //找出操作数一
-        String number1 = expr.substring(0,indexOfPlus);
-        //找出操作数二
-        String number2 = expr.substring(indexOfPlus + 1);
-        //将加号,操作数一，二存入ArrayList
-        result.add(0,number1);
-        result.add(1,expr.substring(indexOfPlus,indexOfPlus + 1));
-        result.add(2,number2);
+        //分词循环
+        int i = 0;
+        //当i<expr.length()时，循环
+        while(i < expr.length()) {
+            //循环提取每一位
+            char character = expr.charAt(i);
+            /*character
+             6767676767
+             +++++++
+             
+             */
+            //如果这一位是数字
+            if(Character.isDigit(character)) {
+                //那么，我们先新建一个StringBuilder
+                StringBuilder sb = new StringBuilder();
+                //当不超过数组范围时，并且这一位仍然是数字,or这一位是小数点
+                while((i < expr.length()) && (Character.isDigit(i) || (i == '.'))) {
+                    //那么就把这个存到string builder中
+                    sb.append(character);
+                    //后一位
+                    i++;
+                }
+                //然后将这个数字存入结果
+                result.add(sb.toString());
+                //直接进入，下次循环
+                continue;
+            } else if((i == '+') || (i == '-')) {
+                //如果是运算符，将运算符存入结果
+                result.add(String.valueOf(i));
+                i++;
+            }
+        }
         //返回ArrayList
         return result;
     }

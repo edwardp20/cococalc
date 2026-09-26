@@ -47,11 +47,22 @@ public class Coco {
         }
         //分词
         ArrayList<String> exprArr = Tokenizer.divideExpression(command);
-        //存入操作数一二
+        for(int i = 0;i < exprArr.size();) {
+            String s;
+            String n1;
+            String n2;
+            if(i % 2 == 0) {
+                s = exprArr.get(i);
+                i++;
+            } else {
+                
+            }
+        }
+        /*存入操作数一二
         BigDecimal num1 = new BigDecimal(exprArr.get(0));
         BigDecimal num2 = new BigDecimal(exprArr.get(2));
         //加
-        result = num1.add(num2).toPlainString();
+        result = num1.add(num2).toPlainString();*/
         return result;
     }
 }
