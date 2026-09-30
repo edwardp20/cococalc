@@ -39,7 +39,7 @@ public class Tokenizer {
                 //那么，我们先新建一个StringBuilder
                 StringBuilder sb = new StringBuilder();
                 //当不超过数组范围时，并且这一位仍然是数字,or这一位是小数点
-                while((i < expr.length()) && (Character.isDigit(i) || (i == '.'))) {
+                while((i < expr.length()) && (Character.isDigit(character) || (i == '.'))) {
                     //那么就把这个存到string builder中
                     sb.append(character);
                     //后一位
