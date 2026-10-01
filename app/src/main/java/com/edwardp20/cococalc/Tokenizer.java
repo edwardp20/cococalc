@@ -39,22 +39,26 @@ public class Tokenizer {
                 //那么，我们先新建一个StringBuilder
                 StringBuilder sb = new StringBuilder();
                 //当不超过数组范围时，并且这一位仍然是数字,or这一位是小数点
-                while((i < expr.length()) && (Character.isDigit(character) || (i == '.'))) {
+                while((i < expr.length()) && (Character.isDigit(character) || (character == '.'))) {
                     //那么就把这个存到string builder中
                     sb.append(character);
                     //后一位
                     i++;
+                    if(i < expr.length()) {
+                        character = expr.charAt(i);
+                    }
                 }
                 //然后将这个数字存入结果
                 result.add(sb.toString());
                 //直接进入，下次循环
                 continue;
-            } else if((i == '+') || (i == '-')) {
+            } else if((character == '+') || (character == '-')) {
                 //如果是运算符，将运算符存入结果
-                result.add(String.valueOf(i));
+                result.add(String.valueOf(character));
                 i++;
             }
         }
+        System.out.println(result);
         //返回ArrayList
         return result;
     }
