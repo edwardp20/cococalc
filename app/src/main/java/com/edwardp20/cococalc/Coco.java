@@ -18,8 +18,11 @@ package com.edwardp20.cococalc;
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
+import com.edwardp20.cococalc.util.NumberUtils;
 
 public class Coco {
     public static void main(String[] args) {
@@ -34,7 +37,11 @@ public class Coco {
             /*用户输入
             那么交给processor()处理并返回结果
             */
-            System.out.println(processor(command));
+            String res = processor(command);
+            if(res.equals("ExceptionDivideZero")) {
+                continue;
+            }
+            System.out.println(res);
         }
     }
 
@@ -50,10 +57,47 @@ public class Coco {
         ArrayList<String> exprArr = Tokenizer.divideExpression(command);
         //计数器
         //TODO:实现调度场算法
-        int count=0;
+        //实现调度场
+        ArrayList<String> yardArr = Yard.yard(exprArr);
+        System.out.println(yardArr);
+        //初始化一个，计算队列
+        ArrayDeque<BigDecimal> calcStack = new ArrayDeque<>();
+        for(int i = 0;i < yardArr.size();i++) {
+            String str = yardArr.get(i);
+            if(NumberUtils.isNumber(str)) {
+                calcStack.push(new BigDecimal(str));
+            } else {
+                BigDecimal right = calcStack.pop();
+                BigDecimal left = calcStack.pop();
+                BigDecimal ans = null;
+                if(str.equals("+")) {
+                    ans = left.add(right);
+                } else if(str.equals("-")) {
+                    ans = left.subtract(right);
+                } else if(str.equals("*")) {
+                    ans = left.multiply(right);
+                } else if(str.equals("/")) {
+                    try {
+                       ans = left.divide(right);
+                    } catch(ArithmeticException e) {
+                        if(right.toPlainString().equals("0")) {
+                            System.out.println("不能除以零");
+                            result = "ExceptionDivideZero";
+                            break;
+                        }
+                        ans = left.divide(right,10,RoundingMode.HALF_UP);
+                    }
+                }
+                calcStack.push(ans);
+            }
+        }
+        if(result.equals("ExceptionDivideZero")) {
+            return result;
+        }
+        //int count=0;
         //
         //我们来提取这个运算符和操作数
-        while(count < exprArr.size()) {
+        /*while(count < exprArr.size()) {
             //如果是第一位
             if(count == 0) {
                 //将第一位作为结果
@@ -77,11 +121,12 @@ public class Coco {
             }
         }
         result = tmp.toPlainString();
+        */
         /*存入操作数一二
         BigDecimal num1 = new BigDecimal(exprArr.get(0));
         BigDecimal num2 = new BigDecimal(exprArr.get(2));
         //加
         result = num1.add(num2).toPlainString();*/
-        return result;
+        return (result + (calcStack.pop().toPlainString()));
     }
 }
