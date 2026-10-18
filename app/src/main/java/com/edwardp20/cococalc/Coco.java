@@ -22,6 +22,7 @@ import java.math.RoundingMode;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
+import java.util.NoSuchElementException;
 import com.edwardp20.cococalc.util.NumberUtils;
 
 public class Coco {
@@ -33,15 +34,20 @@ public class Coco {
             //shell
             System.out.print("cococalc>");
             //收命令
-            String command = s.next();
+            String command = s.nextLine();
             /*用户输入
             那么交给processor()处理并返回结果
             */
             String res = processor(command);
-            if(res.equals("ExceptionDivideZero")) {
+            //提前看返回码
+            if(res.equals("ExceptionDivideZero")) {//除以零
+                continue;
+            } else if(res.equals("ExceptionOp")) {//运算符连起来了
+                continue;
+            } else if(res.equals("ExceptionIllegalCharacter")) {
                 continue;
             }
-            System.out.println(res);
+            System.out.println(res);//否则才打印
         }
     }
 
@@ -55,8 +61,12 @@ public class Coco {
         }
         //分词
         ArrayList<String> exprArr = Tokenizer.divideExpression(command);
+        if(exprArr.get(0).equals("ExceptionIllegalCharacter")) {
+            System.out.println("非法字符");
+            return "ExceptionIllegalCharacter";
+        }
         //计数器
-        //TODO:实现调度场算法
+        //TODO:实现调度场算法 --
         //实现调度场
         ArrayList<String> yardArr = Yard.yard(exprArr);
         System.out.println(yardArr);
@@ -64,12 +74,20 @@ public class Coco {
         ArrayDeque<BigDecimal> calcStack = new ArrayDeque<>();
         for(int i = 0;i < yardArr.size();i++) {
             String str = yardArr.get(i);
+            //是数字直接压栈
             if(NumberUtils.isNumber(str)) {
                 calcStack.push(new BigDecimal(str));
-            } else {
+            } else {//否则弹两个操作数
                 BigDecimal right = calcStack.pop();
-                BigDecimal left = calcStack.pop();
+                BigDecimal left = null;
+                try {//如果左边弹不出来说明是运算符连起来了
+                    left = calcStack.pop();
+                } catch(NoSuchElementException e) {
+                    System.out.println("语法错误");
+                    return "ExceptionOp";
+                }
                 BigDecimal ans = null;
+                //计算罗辑
                 if(str.equals("+")) {
                     ans = left.add(right);
                 } else if(str.equals("-")) {
@@ -85,7 +103,7 @@ public class Coco {
                             result = "ExceptionDivideZero";
                             break;
                         }
-                        ans = left.divide(right,10,RoundingMode.HALF_UP);
+                        ans = left.divide(right,10,RoundingMode.HALF_UP);//暂定保留十位
                     }
                 }
                 calcStack.push(ans);

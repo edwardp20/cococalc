@@ -20,13 +20,15 @@ package com.edwardp20.cococalc.util;
 import java.math.BigDecimal;
 
 public class NumberUtils {
+    //用于判断字符串是否是数字
     public static boolean isNumber(String str) {
+        //如果str为null或啥也没有，直接false
         if((str == null) || (str.isEmpty())) {
             return false;
-        } else {
+        } else {//否则看看能否创BigDecimal instance
             try {
                 new BigDecimal(str);
-                return true;
+                return true;//是数字
             } catch(NumberFormatException e) {
                 return false;
             }

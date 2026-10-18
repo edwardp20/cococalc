@@ -56,6 +56,9 @@ public class Tokenizer {
                 //如果是运算符，将运算符存入结果
                 result.add(String.valueOf(character));
                 i++;
+            } else {
+                result.add(0,"ExceptionIllegalCharacter");
+                return result;
             }
         }
         System.out.println(result);

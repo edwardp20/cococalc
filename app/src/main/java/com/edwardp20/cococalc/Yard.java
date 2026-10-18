@@ -35,6 +35,7 @@ public class Yard {
         //初始化临时栈和结果
         ArrayDeque<String> tmpStack = new ArrayDeque<>();
         ArrayList<String> result = new ArrayList<>();
+        //调度场算法
         for(int i = 0;i < exprDivided.size();i++) {
             String s = exprDivided.get(i);
             if(NumberUtils.isNumber(s)) {
@@ -53,6 +54,7 @@ public class Yard {
         while(!(tmpStack.isEmpty())) {
             result.add(tmpStack.pop());
         }
+        //调度场算法结束
         return result;
     }
 }
