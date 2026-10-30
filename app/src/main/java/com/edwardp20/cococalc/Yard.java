@@ -40,19 +40,36 @@ public class Yard {
             String s = exprDivided.get(i);
             if(NumberUtils.isNumber(s)) {
                 result.add(s);
-            } else {
-                if(!(tmpStack.isEmpty())) {
-                    while((!(tmpStack.isEmpty())) && ((prec.get(tmpStack.peek()).intValue()) >= (prec.get(s).intValue()))) {
-                         result.add(tmpStack.pop());
-                    }
-                    tmpStack.push(s);
-                } else {
-                    tmpStack.push(s);
+            } else if(s.equals("(")) {
+                tmpStack.push(s);
+            } else if(s.equals(")")) {
+                while((!(tmpStack.isEmpty())) && (!(tmpStack.peek().equals("(")))) {
+                    result.add(tmpStack.pop());
                 }
+
+                if((!(tmpStack.isEmpty())) && (tmpStack.peek().equals("("))) {
+                    tmpStack.pop();
+                } else {
+                    ArrayList<String> errArr = new ArrayList<>();
+                    errArr.add("ExceptionBracketUnmatched");
+                    return errArr;
+                }
+            } else {
+                while((!(tmpStack.isEmpty())) && (!(tmpStack.peek().equals("("))) && ((prec.get(tmpStack.peek()).intValue()) >= (prec.get(s).intValue()))) {
+                    result.add(tmpStack.pop());
+                }
+                tmpStack.push(s);
             }
         }
         while(!(tmpStack.isEmpty())) {
-            result.add(tmpStack.pop());
+            String top = tmpStack.pop();
+            if(top.equals("(")) {
+                ArrayList<String> errArr = new ArrayList<>();
+                errArr.add("ExceptionBracketUnmatched");
+                return errArr;
+            }
+
+            result.add(top);
         }
         //调度场算法结束
         return result;

@@ -52,7 +52,7 @@ public class Tokenizer {
                 result.add(sb.toString());
                 //直接进入，下次循环
                 continue;
-            } else if((character == '+') || (character == '-') || (character == '*') ||(character == '/')) {
+            } else if((character == '+') || (character == '-') || (character == '*') || (character == '/') || (character == '(') || (character == ')')) {
                 //如果是运算符，将运算符存入结果
                 result.add(String.valueOf(character));
                 i++;

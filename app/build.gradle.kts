@@ -55,4 +55,7 @@ tasks.shadowJar {
     from("../NOTICE") {
         into("META-INF/legal/")
     }
+    // from("../legal/") {
+        // into("META-INF/legal/")
+    // }
 }

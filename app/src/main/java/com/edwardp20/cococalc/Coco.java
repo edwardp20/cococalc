@@ -46,6 +46,12 @@ public class Coco {
                 continue;
             } else if(res.equals("ExceptionIllegalCharacter")) {
                 continue;
+            } else if(res.equals("ExceptionBracketUnmatched")) {
+                continue;
+            } else if(res.equals("ExceptionOpWrite")) {
+                continue;
+            } else if(res.equals("PrintVersion")) {
+                continue;
             }
             System.out.println(res);//否则才打印
         }
@@ -59,6 +65,10 @@ public class Coco {
         if(command.equals("--exit")) {
             System.exit(0);
         }
+        if(command.equals("--version")) {
+            System.out.println("1.0");
+            return "PrintVersion";
+        }
         //分词
         ArrayList<String> exprArr = Tokenizer.divideExpression(command);
         if(exprArr.get(0).equals("ExceptionIllegalCharacter")) {
@@ -70,6 +80,10 @@ public class Coco {
         //实现调度场
         ArrayList<String> yardArr = Yard.yard(exprArr);
         System.out.println(yardArr);
+        if(yardArr.get(0).equals("ExceptionBracketUnmatched")) {
+            System.out.println("括号不匹配");
+;            return "ExceptionBracketUnmatched";
+        }
         //初始化一个，计算队列
         ArrayDeque<BigDecimal> calcStack = new ArrayDeque<>();
         for(int i = 0;i < yardArr.size();i++) {
@@ -145,6 +159,10 @@ public class Coco {
         BigDecimal num2 = new BigDecimal(exprArr.get(2));
         //加
         result = num1.add(num2).toPlainString();*/
+        if(calcStack.size() > 1) {
+            System.out.println("少写运算符");
+            return "ExceptionOpWrite";
+        }
         return (result + (calcStack.pop().toPlainString()));
     }
 }
