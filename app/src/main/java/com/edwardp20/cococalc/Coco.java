@@ -66,7 +66,7 @@ public class Coco {
             System.exit(0);
         }
         if(command.equals("--version")) {
-            System.out.println("1.0");
+            System.out.println("1.0-snapshot1");
             return "PrintVersion";
         }
         //分词

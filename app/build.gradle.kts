@@ -47,7 +47,7 @@ application {
 tasks.shadowJar {
     mergeServiceFiles()
     archiveBaseName.set("cococalc")  // jar 文件的基本名字
-    archiveVersion.set("0.0.1-snapshot1")  // jar 文件的版本号
+    archiveVersion.set("1.0-snapshot1")  // jar 文件的版本号
     archiveClassifier.set("")  // jar
     from("../LICENSE") {
         into("META-INF/legal/")
