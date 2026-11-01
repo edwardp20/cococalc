@@ -2,6 +2,9 @@ name: build-and-test-on-push
 
 on:
   push:
+  
+env:
+  ACTIONS_STEP_DEBUG: true
 
 jobs:
   build:
