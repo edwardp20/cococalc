@@ -10,13 +10,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
 
-      - name: Set up JDK 26.0.2
-        uses: actions/setup-java@v5.7.0
+      - name: Set up JDK 27.0.1.0.3
+        uses: actions/setup-java@v6.1.0
         with:
-          java-version: '27.0.1.0.3+5'
+          java-version: '27.0.1.0.3'
           distribution: liberica
 
-      - name: Build the library
+      - name: Build the application
         run: |
           java --version
           chmod -R 777 gradlew
