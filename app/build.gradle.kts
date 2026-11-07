@@ -20,6 +20,7 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     //implementation(libs.guava)
+    implementation(files("../libs/gson-2.15.0.jar"))
 }
 
 testing {
@@ -46,6 +47,7 @@ application {
 
 tasks.shadowJar {
     mergeServiceFiles()
+    exclude("META-INF/**/*.SF", "META-INF/**/*.RSA", "META-INF/**/*.DSA", "META-INF/**/*.EC")
     archiveBaseName.set("cococalc")  // jar 文件的基本名字
     archiveVersion.set("1.0-snapshot1")  // jar 文件的版本号
     archiveClassifier.set("")  // jar
@@ -55,7 +57,7 @@ tasks.shadowJar {
     from("../NOTICE") {
         into("META-INF/legal/")
     }
-    // from("../legal/") {
-        // into("META-INF/legal/")
-    // }
+    from("../legal/") {
+        into("META-INF/legal/")
+    }
 }
