@@ -19,16 +19,22 @@ package com.edwardp20.cococalc;
 */
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
+import java.util.HashMap;
+
 import com.edwardp20.cococalc.util.NumberUtils;
+import com.edwardp20.cococalc.util.CacheUtils;
 
 public class Coco {
     public static void main(String[] args) {
         //Scanner
         Scanner s = new Scanner(System.in);
+        //HashMap
+        HashMap<String,String> cacheMap = new HashMap<String,String>();
         //计算器主循环
         while(true) {
             //shell
@@ -38,7 +44,7 @@ public class Coco {
             /*用户输入
             那么交给processor()处理并返回结果
             */
-            String res = processor(command);
+            String res = processor(command,cacheMap);
             //提前看返回码
             if(res.equals("ExceptionDivideZero")) {//除以零
                 continue;
@@ -54,15 +60,18 @@ public class Coco {
                 continue;
             }
             System.out.println(res);//否则才打印
+            //add to cache(test)
+            cacheMap.put(command,res);
         }
     }
 
-    private static String processor(String command) {
+    private static String processor(String command,HashMap<String,String> mapToStore) {
         //如果匹配到--exit，就直接退出
         //定义返回值
         String result = "= ";
         BigDecimal tmp = null;
         if(command.equals("--exit")) {
+            CacheUtils.writeJsonFileFromHashMap("cococalc-cache-unstable.json",mapToStore);
             System.exit(0);
         }
         if(command.equals("--version")) {
