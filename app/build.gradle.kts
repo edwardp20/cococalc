@@ -21,6 +21,7 @@ dependencies {
     // This dependency is used by the application.
     //implementation(libs.guava)
     implementation(files("../libs/gson-2.15.0.jar"))
+    implementation(files("../libs/picocli-4.7.7.jar"))
 }
 
 testing {

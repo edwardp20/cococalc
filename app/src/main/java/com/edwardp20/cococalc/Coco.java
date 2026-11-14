@@ -41,10 +41,14 @@ public class Coco {
             System.out.print("cococalc>");
             //收命令
             String command = s.nextLine();
+            if(command.equals("--exit")) {
+                CacheUtils.writeJsonFileFromHashMap("cococalc-cache-unstable.json",mapToStore);
+                System.exit(0);
+            }
             /*用户输入
             那么交给processor()处理并返回结果
             */
-            String res = processor(command,cacheMap);
+            String res = processor(command);
             //提前看返回码
             if(res.equals("ExceptionDivideZero")) {//除以零
                 continue;
@@ -65,15 +69,11 @@ public class Coco {
         }
     }
 
-    private static String processor(String command,HashMap<String,String> mapToStore) {
+    private static String processor(String command) {
         //如果匹配到--exit，就直接退出
         //定义返回值
         String result = "= ";
         BigDecimal tmp = null;
-        if(command.equals("--exit")) {
-            CacheUtils.writeJsonFileFromHashMap("cococalc-cache-unstable.json",mapToStore);
-            System.exit(0);
-        }
         if(command.equals("--version")) {
             System.out.println("1.0");
             return "PrintVersion";
@@ -135,39 +135,6 @@ public class Coco {
         if(result.equals("ExceptionDivideZero")) {
             return result;
         }
-        //int count=0;
-        //
-        //我们来提取这个运算符和操作数
-        /*while(count < exprArr.size()) {
-            //如果是第一位
-            if(count == 0) {
-                //将第一位作为结果
-                tmp = new BigDecimal(exprArr.get(count));
-                //update count
-                count++;
-                continue;
-            } else {
-                //获取运算符，操作数
-                String op = exprArr.get(count);
-                count++;
-                BigDecimal num = new BigDecimal(exprArr.get(count));
-                count++;
-                //计算
-                if(op.equals("+")) {
-                    tmp = tmp.add(num);
-                } else if(op.equals("-")) {
-                    tmp = tmp.subtract(num);
-                }
-                continue;
-            }
-        }
-        result = tmp.toPlainString();
-        */
-        /*存入操作数一二
-        BigDecimal num1 = new BigDecimal(exprArr.get(0));
-        BigDecimal num2 = new BigDecimal(exprArr.get(2));
-        //加
-        result = num1.add(num2).toPlainString();*/
         if(calcStack.size() > 1) {
             System.out.println("少写运算符");
             return "ExceptionOpWrite";
